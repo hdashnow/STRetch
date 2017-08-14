@@ -13,9 +13,11 @@ run {
         set_sample_info +
         extract_reads_region +
         align_bwa + index_bam +
+        cleanup_fastq +
         median_cov_target +
         STR_coverage +
-        STR_locus_counts 
+        STR_locus_counts +
+        cleanup_bam
     ] +
     estimate_size
 }

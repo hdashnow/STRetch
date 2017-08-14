@@ -78,6 +78,11 @@ STR_locus_counts = {
     }
 }
 
+cleanup_bam = {
+    cleanup "*.bam"
+}
+
+
 estimate_size = {
     produce("STRs.tsv") {
         if(CONTROL=="") {
@@ -153,6 +158,10 @@ extract_reads_region = {
             $bedtools bamtofastq -i - -fq >(gzip -c > $output1.gz) -fq2 >(gzip -c > $output2.gz)
         """
     }
+}
+
+cleanup_fastq = {
+    cleanup "*.fastq.gz"
 }
 
 @transform('median_cov')
