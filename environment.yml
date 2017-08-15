@@ -1,5 +1,6 @@
 name: STR
 channels:
+- conda-forge
 - bioconda
 dependencies:
 - python=3*
@@ -11,3 +12,4 @@ dependencies:
 - htslib
 - pybedtools
 - goleft=0.1.8
+- bzip2

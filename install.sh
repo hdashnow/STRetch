@@ -32,7 +32,9 @@ function python_install {
     bash miniconda.sh -b -p $PWD/miniconda
     rm miniconda.sh
     $PWD/miniconda/bin/conda env create -f ../environment.yml
-    ln -s $PWD/miniconda/envs/STR/bin/* $PWD/bin/
+    for i in python bedtools goleft
+        do ln -s $PWD/miniconda/envs/STR/bin/$i $PWD/bin/
+        done
 #    source activate STR
 }
 
