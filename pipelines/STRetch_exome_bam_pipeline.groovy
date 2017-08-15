@@ -8,6 +8,7 @@ load 'pipeline_config.groovy'
 load 'pipeline_stages.groovy'
 
 run {
+    check_target +
     str_targets +
     '%.bam' * [
         set_sample_info +

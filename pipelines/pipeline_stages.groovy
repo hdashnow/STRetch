@@ -129,6 +129,18 @@ doc "Calculate the median coverage over the whole genome"
 /////////////////////////////////////
 // Stages specific to exome pipeline
 
+check_target = {
+
+doc "check exome target bed file exists"
+
+    if(!file(EXOME_TARGET).exists())
+        fail """
+            The configured target region file: $EXOME_TARGET could not be found. 
+
+            Please check pipelines/pipeline_config.groovy to make sure this is set correctly
+        """
+}
+
 @transform('median_cov')
 median_cov_region = {
 
