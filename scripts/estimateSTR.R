@@ -88,6 +88,10 @@ parse.STRcov = function(filename) {
   sim.id = get.sample(filename)
   
   cov.data = read.table(filename, stringsAsFactors = FALSE, col.names = c('chrom', 'start', 'end', 'coverage'))
+  if (nrow(cov.data) == 0) {
+    warning('No STR decoy chromosome coverage data in file ',
+      filename, '. This may indicate an error earlier in the pipeline.')
+  }
   cov.data$sample = sim.id
   cov.data$repeatunit = sapply(cov.data$chrom, function(x){ strsplit(x, '-', fixed = TRUE)[[1]][2] } )
   cov.data = cov.data[,c('sample', 'repeatunit', 'coverage')]
@@ -99,6 +103,10 @@ parse.STRcov = function(filename) {
 parse.locuscov = function(filename) {
   sim.id = get.sample(filename)
   locuscov.data = read.table(filename, stringsAsFactors = FALSE, header=TRUE)
+  if (nrow(locuscov.data) == 0) {
+    warning('No locus count data in file ',
+      filename, '. This may indicate an error earlier in the pipeline.')
+  }
   locuscov.data$sample = sim.id
   locuscov.data$locus = paste(locuscov.data$STR_chr, locuscov.data$STR_start, locuscov.data$STR_stop, sep='-')
   locuscov.data$repeatunit = locuscov.data$motif
