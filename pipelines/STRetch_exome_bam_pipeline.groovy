@@ -10,12 +10,12 @@ load 'pipeline_stages.groovy'
 run {
     check_target +
     str_targets +
+    exome_str_targets +
     '%.bam' * [
         set_sample_info +
         extract_reads_region +
         align_bwa + index_bam +
-        exome_str_targets +
-        median_cov_target +
+        median_cov_target_exome +
         STR_coverage +
         STR_locus_counts
     ] +

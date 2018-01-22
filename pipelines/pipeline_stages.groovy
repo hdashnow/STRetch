@@ -163,7 +163,7 @@ str_targets = {
 
     //produce(STR_BED[0..-3] + 'slop.bed') {
         exec """
-            $bedtools slop -b $SLOP -i $input.bed -g ${REF}.genome | $bedtools merge > $output.bed
+            $bedtools slop -b $SLOP -i $input.bed -g ${REF}.genome | $bedtools merge > $output.slop.bed
         """
     //}
 }
@@ -177,7 +177,7 @@ extract_reads_region = {
     produce(branch.sample + '_L001_R1.fastq.gz', branch.sample + '_L001_R2.fastq.gz') {
         exec """
 
-            cat <( $samtools view -hu -L $input.bed $input.bam )
+            cat <( $samtools view -hu -L $input.slop.bed $input.bam )
                 <( $samtools view -u -f 4 $input.bam ) |
             $samtools collate -Ou -n 128 - $output.prefix |
             $bedtools bamtofastq -i - -fq >(gzip -c > $output1.gz) -fq2 >(gzip -c > $output2.gz)
@@ -185,22 +185,32 @@ extract_reads_region = {
     }
 }
 
-@filter('intersect')
 exome_str_targets = {
 
     doc "Create bed file, the intersection of STR regions and the exome target region"
 
-        exec """
-            $bedtools intersect -a $input.bed -b $EXOME_TARGET > $output.bed
-        """
+    exec """
+        $bedtools intersect -a $input.bed -b $EXOME_TARGET > $output.target.bed
+    """
 }
 
 @transform('median_cov')
 median_cov_target = {
 
-doc "Calculate the median coverage over the target region"
+    doc "Calculate the median coverage over the target region"
 
     exec """
         $goleft covmed $input.bam $input.bed | cut -f 1 > $output.median_cov
-     """
+    """
 }
+
+@transform('median_cov')
+median_cov_target_exome = {
+
+    doc "Calculate the median coverage over the target region"
+
+    exec """
+        $goleft covmed $input.bam $input.target.bed | cut -f 1 > $output.median_cov
+    """
+}
+
