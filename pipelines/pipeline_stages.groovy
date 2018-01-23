@@ -88,10 +88,13 @@ STR_coverage = {
 STR_locus_counts = {
     transform("bam") to ("locus_counts") {
         exec """
+            STRPATH=$PATH;
+            PATH=$STRETCH/tools/bin:$PATH;
             $python $STRETCH/scripts/identify_locus.py
             --bam $input.bam
             --bed $STR_BED
             --output $output.locus_counts
+            ;PATH=$STRPATH
         """
     }
 }
@@ -100,12 +103,12 @@ estimate_size = {
     produce("STRs.tsv") {
         if(CONTROL=="") {
              exec """
-                Rscript $STRETCH/scripts/estimateSTR.R
+                $STRETCH/tools/bin/Rscript $STRETCH/scripts/estimateSTR.R
                     --model $STRETCH/scripts/STRcov.model.csv
             """
         } else {
             exec """
-                Rscript $STRETCH/scripts/estimateSTR.R
+                $STRETCH/tools/bin/Rscript $STRETCH/scripts/estimateSTR.R
                     --model $STRETCH/scripts/STRcov.model.csv
                     --control $CONTROL
             """
