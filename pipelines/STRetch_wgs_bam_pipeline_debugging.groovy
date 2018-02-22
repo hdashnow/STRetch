@@ -19,8 +19,9 @@ extract_region_unmapped = {
 
 @filter("rnamesorted")
 rname_sort = {
+        //$samtools sort -n --threads $threads -T $output.prefix $input.bam > $output.bam
     exec """
-        $samtools collate -O -n 128 $input.bam $output.prefix > $output.bam
+        $samtools sort -n -T $output.prefix $input.bam > $output.bam
     """
 }
 
