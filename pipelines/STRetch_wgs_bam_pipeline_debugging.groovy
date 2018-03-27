@@ -9,20 +9,23 @@ load 'pipeline_stages.groovy'
 
 @filter("STRregions")
 extract_region_unmapped = {
+//    exec """
+//            set -o pipefail
+//
+//            cat <( $samtools view -hu -L $input.bed $input.bam )
+//                <( $samtools view -u -f 4 $input.bam ) > $output.bam
+//    ""","large"
     exec """
-            set -o pipefail
-
-            cat <( $samtools view -hu -L $input.bed $input.bam )
-                <( $samtools view -u -f 4 $input.bam ) > $output.bam
-    """
+        $samtools view --threads $threads -h -L $input.bed $input.bam > $output.bam
+    ""","large"
 }
 
 @filter("rnamesorted")
 rname_sort = {
         //$samtools sort -n --threads $threads -T $output.prefix $input.bam > $output.bam
     exec """
-        $samtools sort -n -T $output.prefix $input.bam > $output.bam
-    """
+        $samtools sort -n --threads $threads -T $output.prefix $input.bam > $output.bam
+    ""","large"
 }
 
 extract_fastq = {
@@ -36,7 +39,7 @@ extract_fastq = {
             $bedtools bamtofastq -i $input.bam -fq $R1temp -fq2 $R2temp &&
             gzip -c $R1temp > $output1.gz &&
             gzip -c $R2temp > $output2.gz
-        """
+        ""","large"
     }
 }
 
