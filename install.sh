@@ -16,7 +16,7 @@ mkdir -p tools/bin
 cd tools
 
 #a list of which programs need to be installed
-commands="bpipe python goleft bedtools bwa samtools"
+commands="samtools bpipe python goleft bedtools bwa"
 
 #installation method
 function bpipe_install {
@@ -48,6 +48,7 @@ function samtools_install {
     tar -jxvf samtools-1.3.1.tar.bz2
     rm samtools-1.3.1.tar.bz2
     make prefix=$PWD install -C samtools-1.3.1/
+    ln -s $PWD/samtools-1.3.1/samtools $PWD/bin/
 }
 
 function download_hg19 {
