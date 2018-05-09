@@ -32,7 +32,7 @@ function python_install {
     bash miniconda.sh -b -p $PWD/miniconda
     rm miniconda.sh
     $PWD/miniconda/bin/conda env create -f ../environment.yml
-    ln -s $PWD/miniconda/envs/STR/bin/* $PWD/bin/
+    ln -s $PWD/miniconda/envs/STR2/bin/* $PWD/bin/
 #    source activate STR
 }
 
@@ -94,7 +94,7 @@ for c in $commands ; do
 done
 
 # Set location of groovy dependancies for gngs read extraction tool
-echo "GNGS_JAR=\"$installdir/tools/groovy-ngs-utils/1.0.7/groovy-ngs-utils.jar\""
+echo "GNGS_JAR=\"$installdir/tools/groovy-ngs-utils/1.0.7/groovy-ngs-utils.jar\"" >> $toolspec
 echo >> $toolspec
 
 if [ ! -f $refdir/*dedup.sorted.bed ] ; then
